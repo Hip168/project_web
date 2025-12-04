@@ -36,8 +36,9 @@ const Login: React.FC = () => {
             } else {
                 navigate('/student');
             }
-        } catch (err: any) {
-            const errorMessage = err.response?.data?.error || err.response?.data?.message || 'Đăng nhập thất bại';
+        } catch (err) {
+            const error = err as { response?: { data?: { error?: string; message?: string } } };
+            const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Đăng nhập thất bại';
             setError(errorMessage);
         } finally {
             setLoading(false);
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500">
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl w-full max-w-md border border-white/20">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">Chào Mừng</h1>
