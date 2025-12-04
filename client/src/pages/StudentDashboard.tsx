@@ -6,6 +6,8 @@ import ProfileCard from '../components/Cards/ProfileCard';
 import ScoreCard from '../components/Cards/ScoreCard';
 import ActivityStats from '../components/Cards/ActivityStats';
 import ActivityCard from '../components/Cards/ActivityCard';
+import ReportFormModal from '../components/Modals/ReportFormModal';
+import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../store/store';
 
 interface Activity {
@@ -31,10 +33,13 @@ interface Score {
 
 const StudentDashboard: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const navigate = useNavigate();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [participations, setParticipations] = useState<Participation[]>([]);
   const [score, setScore] = useState<Score | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,12 +70,19 @@ const StudentDashboard: React.FC = () => {
   }, [user?.profile?.id]);
 
   const handleRegister = async (activityId: string) => {
+    setSelectedActivityId(activityId);
+    setIsReportModalOpen(true);
+  };
+
+  const handleReportSubmit = async ({ selectedActivityId, proof }: { selectedActivityId: string; proof: string }) => {
     try {
-      await api.post('/participations/register', {
+      await api.post('/participations', {
         sinhVienId: user?.profile?.id,
-        hoatDongId: activityId
+        hoatDongId: selectedActivityId,
+        minhChung: proof
       });
-      alert('Đăng ký thành công!');
+      alert('Đăng ký và gửi minh chứng thành công!');
+      setIsReportModalOpen(false);
       // Refetch participations data after registration
       const participationsRes = await api.get(`/participations/student/${user?.profile?.id}`);
       setParticipations(participationsRes.data);
@@ -121,12 +133,24 @@ const StudentDashboard: React.FC = () => {
             </div>
             {activities.length > 3 && (
               <div className="mt-4 text-center">
-                <button className="text-indigo-600 font-medium hover:text-indigo-800">Xem tất cả hoạt động →</button>
+                <button
+                  onClick={() => navigate('/student/activities')}
+                  className="text-indigo-600 font-medium hover:text-indigo-800"
+                >
+                  Xem tất cả hoạt động →
+                </button>
               </div>
             )}
           </div>
         </div>
       )}
+
+      <ReportFormModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        onSubmit={handleReportSubmit}
+        initialActivityId={selectedActivityId}
+      />
     </Layout>
   );
 };

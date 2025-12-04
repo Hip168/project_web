@@ -19,7 +19,7 @@ export const registerActivity = async (req: Request, res: Response) => {
         });
 
         if (existing) {
-            return res.status(400).json({ message: 'Already registered for this activity' });
+            return res.status(400).json({ message: 'Bạn đã đăng ký hoạt động này rồi' });
         }
 
         const participation = await prisma.thamGia.create({

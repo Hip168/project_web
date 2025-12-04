@@ -5,6 +5,7 @@ interface ReportFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: { selectedActivityId: string; proof: string }) => Promise<void>;
+  initialActivityId?: string;
 }
 
 interface Activity {
@@ -16,6 +17,7 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  initialActivityId
 }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityId, setSelectedActivityId] = useState('');
@@ -25,8 +27,13 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       fetchActivities();
+      if (initialActivityId) {
+        setSelectedActivityId(initialActivityId);
+      } else {
+        setSelectedActivityId('');
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, initialActivityId]);
 
   const fetchActivities = async () => {
     try {
