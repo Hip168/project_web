@@ -66,7 +66,7 @@ const StudentDashboard: React.FC = () => {
 
   const handleRegister = async (activityId: string) => {
     try {
-      await api.post('/participations/register', {
+      await api.post('/participations', {
         sinhVienId: user?.profile?.id,
         hoatDongId: activityId
       });
