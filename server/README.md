@@ -4,7 +4,7 @@ This is the backend API for the Student Training Point Management System, built 
 
 ## Base URL
 
-The API is accessible at: `http://localhost:5001/api`
+The API is accessible at: `https://projectwebserver-production.up.railway.app/api`
 
 ## Endpoints
 

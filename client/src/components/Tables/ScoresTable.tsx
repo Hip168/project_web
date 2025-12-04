@@ -57,7 +57,7 @@ const ScoresTable: React.FC<ScoresTableProps> = ({
                   <td className="px-6 py-4 text-gray-600">{student.lop?.tenLop || 'N/A'}</td>
                   <td className="px-6 py-4 font-bold text-indigo-600">{latestScore?.tongDiem || 0}</td>
                   <td className="px-6 py-4">
-                    <StatusBadge status={latestScore?.xepLoai as 'DA_DUYET' | 'TU_CHOI' | 'CHO_DUYET'} />
+                    <StatusBadge status={latestScore?.xepLoai || 'N/A'} />
                   </td>
                 </tr>
               );
