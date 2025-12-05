@@ -1,8 +1,8 @@
-// File: client/src/pages/AdminReports.tsx
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import api from '../utils/api';
-// Thư viện PDF (Nhớ chạy: npm install jspdf jspdf-autotable tại thư mục client trước)
+import ScoresTable from '../components/Tables/ScoresTable';
+// 1. Import thư viện PDF
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -10,7 +10,8 @@ interface StudentScore {
     id: string;
     maSv: string;
     hoTen: string;
-    lop: { tenLop: string };
+    lopId: string;
+    lop: { id: string; tenLop: string };
     diemRenLuyens: {
         tongDiem: number;
         xepLoai: string;
@@ -20,25 +21,39 @@ interface StudentScore {
 
 const AdminReports: React.FC = () => {
     const [students, setStudents] = useState<StudentScore[]>([]);
+    const [classes, setClasses] = useState<{ id: string; tenLop: string }[]>([]);
+    const [selectedClass, setSelectedClass] = useState<string>('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchScores();
+        fetchInitialData();
     }, []);
 
-    const fetchScores = async () => {
+    const fetchInitialData = async () => {
         try {
-            // SỬA QUAN TRỌNG: Đổi đường dẫn từ '/users/students' thành '/users'
-            const response = await api.get('/users'); 
-            setStudents(response.data);
+            setLoading(true);
+            const [studentsRes, classesRes] = await Promise.all([
+                api.get('/users'),
+                api.get('/classes')
+            ]);
+
+            setStudents(studentsRes.data);
+            setClasses(classesRes.data);
+
+            if (classesRes.data.length > 0) {
+                setSelectedClass(classesRes.data[0].id);
+            }
         } catch (error) {
-            console.error('Failed to fetch scores', error);
+            console.error('Failed to fetch data', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Hàm xóa dấu tiếng Việt để xuất PDF không lỗi font
+    const filteredStudents = selectedClass
+        ? students.filter(s => s.lopId === selectedClass)
+        : students;
+
     const removeVietnameseTones = (str: string) => {
         str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
         str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -57,98 +72,108 @@ const AdminReports: React.FC = () => {
         return str;
     }
 
+
     const handleExportPDF = () => {
         const doc = new jsPDF();
         const today = new Date();
         const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-        
-        doc.setFontSize(18);
-        doc.text("BAO CAO TONG HOP DIEM REN LUYEN", 14, 22);
+
+        // Tiêu đề
+        doc.setFontSize(16);
+        doc.text("BAO CAO DIEM REN LUYEN", 14, 20);
         
         doc.setFontSize(11);
-        doc.setTextColor(100);
-        doc.text(`Ngay xuat: ${dateStr}`, 14, 30);
+        doc.text(`Ngay xuat: ${dateStr}`, 14, 28);
+        
+    
+        const currentClassName = classes.find(c => c.id === selectedClass)?.tenLop || "Tat ca";
+        doc.text(`Lop: ${currentClassName}`, 14, 34);
 
-        const tableColumn = ["STT", "Ma SV", "Ho Ten", "Lop", "Tong Diem", "Xep Loai"];
+        const tableColumn = ["STT", "Ma SV", "Ho Ten", "Lop", "Diem", "Xep Loai"];
         const tableRows: any[] = [];
 
-        students.forEach((student, index) => {
+        filteredStudents.forEach((student, index) => {
             const latestScore = student.diemRenLuyens?.[0];
-            const studentData = [
+            const rowData = [
                 index + 1,
                 student.maSv,
                 removeVietnameseTones(student.hoTen), 
-                student.lop?.tenLop || 'N/A',
+                student.lop?.tenLop || '',
                 latestScore?.tongDiem || 0,
-                latestScore?.xepLoai || 'N/A',
+                latestScore?.xepLoai || 'N/A'
             ];
-            tableRows.push(studentData);
+            tableRows.push(rowData);
         });
 
+        // Tạo bảng
         autoTable(doc, {
             head: [tableColumn],
             body: tableRows,
-            startY: 35,
+            startY: 40,
             theme: 'grid',
-            headStyles: { fillColor: [79, 70, 229] }
+            headStyles: { 
+                fillColor: [63, 81, 181], 
+                halign: 'center'
+            },
+            styles: {
+                fontSize: 10
+            },
+            columnStyles: {
+                0: { halign: 'center', cellWidth: 15 },
+                4: { halign: 'center' }, 
+                5: { halign: 'center' } 
+            }
         });
 
-        doc.save(`Bao_Cao_${dateStr}.pdf`);
+    
+        doc.save(`Bao_Cao_${currentClassName}_${dateStr}.pdf`);
     };
 
     return (
         <Layout>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-indigo-50">
-                    <div>
-                        <h3 className="text-lg font-bold text-indigo-900">Báo Cáo Điểm Rèn Luyện</h3>
-                        <p className="text-sm text-indigo-700">Tổng hợp kết quả rèn luyện của sinh viên</p>
+                <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h3 className="text-lg font-bold text-gray-800">Báo Cáo Điểm Rèn Luyện</h3>
+
+                    <div className="flex items-center gap-3">
+                        {/* Dropdown chọn lớp */}
+                        <div className="flex items-center gap-2">
+                            <label htmlFor="class-select" className="text-sm font-medium text-gray-700">Lớp:</label>
+                            <select
+                                id="class-select"
+                                value={selectedClass}
+                                onChange={(e) => setSelectedClass(e.target.value)}
+                                className="block w-32 md:w-40 pl-3 pr-8 py-2 text-sm border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md border"
+                            >
+                                {classes.map((cls) => (
+                                    <option key={cls.id} value={cls.id}>
+                                        {cls.tenLop}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* 4. Nút Xuất PDF */}
+                        <button
+                            onClick={handleExportPDF}
+                            disabled={filteredStudents.length === 0}
+                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm text-sm font-medium"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Xuất PDF
+                        </button>
                     </div>
-                    {/* NÚT XUẤT PDF ĐƯỢC THÊM TẠI ĐÂY */}
-                    <button
-                        onClick={handleExportPDF}
-                        disabled={students.length === 0}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-sm font-medium"
-                    >
-                        Xuất PDF
-                    </button>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-50 text-gray-600 font-medium text-sm uppercase tracking-wider">
-                            <tr>
-                                <th className="px-6 py-4">Mã SV</th>
-                                <th className="px-6 py-4">Họ Tên</th>
-                                <th className="px-6 py-4">Lớp</th>
-                                <th className="px-6 py-4">Tổng Điểm</th>
-                                <th className="px-6 py-4">Xếp Loại</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                            {loading ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Đang tải...</td></tr>
-                            ) : students.length === 0 ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Không có dữ liệu.</td></tr>
-                            ) : (
-                                students.map((student) => {
-                                    const latestScore = student.diemRenLuyens?.[0];
-                                    return (
-                                        <tr key={student.id} className="hover:bg-gray-50">
-                                            <td className="px-6 py-4 font-medium">{student.maSv}</td>
-                                            <td className="px-6 py-4">{student.hoTen}</td>
-                                            <td className="px-6 py-4">{student.lop?.tenLop || 'N/A'}</td>
-                                            <td className="px-6 py-4 font-bold text-indigo-600">{latestScore?.tongDiem || 0}</td>
-                                            <td className="px-6 py-4">{latestScore?.xepLoai || 'Chưa xếp loại'}</td>
-                                        </tr>
-                                    );
-                                })
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                <ScoresTable
+                    students={filteredStudents}
+                    loading={loading}
+                />
             </div>
         </Layout>
     );
 };
+
 export default AdminReports;
