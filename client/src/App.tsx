@@ -14,6 +14,7 @@ import VerificationPage from './pages/VerificationPage';
 
 import StudentClassPage from './pages/StudentClassPage';
 import StudentReportsPage from './pages/StudentReportsPage';
+import StudentActivitiesPage from './pages/StudentActivitiesPage';
 
 const App: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/student/class" element={<StudentClassPage />} />
           <Route path="/student/reports" element={<StudentReportsPage />} />
+          <Route path="/student/activities" element={<StudentActivitiesPage />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

@@ -19,7 +19,7 @@ function generatePhoneNumber() {
     const prefixes = ['09', '03', '07', '08', '05'];
     const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
     const suffix = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
-    return prefix + suffix;
+    return prefix + suffix
 }
 
 async function main() {
