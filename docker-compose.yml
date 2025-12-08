@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -12,6 +11,42 @@ services:
       - "5440:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build: ./server
+    container_name: qlsv_migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:123@db:5432/qlsv_db
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+      - /app/dist
+
+  backend:
+    build: ./server
+    container_name: qlsv_backend
+    ports:
+      - "5001:5001"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgres://postgres:123@db:5432/qlsv_db
+      NODE_ENV: production
+      PORT: 5001
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+      - /app/dist
 
 volumes:
   postgres_data:

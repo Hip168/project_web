@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ClassesTable from '../components/Tables/ClassesTable';
 import ClassesModal from '../components/Modals/ClassesModal';
@@ -58,7 +57,7 @@ const ClassesPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Quản Lý Lớp Học</h2>
         <button
@@ -82,7 +81,7 @@ const ClassesPage: React.FC = () => {
         newClass={newClass}
         onClassChange={(field, value) => setNewClass({ ...newClass, [field]: value })}
       />
-    </Layout>
+    </>
   );
 };
 

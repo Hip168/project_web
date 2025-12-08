@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import StudentModal from '../components/Modals/StudentModal';
 import StudentsHeader from '../components/Headers/StudentsHeader';
@@ -62,7 +61,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <StudentsHeader onAddClick={() => setIsModalOpen(true)} />
         <StudentsTable
@@ -79,7 +78,7 @@ const AdminDashboard: React.FC = () => {
         onSuccess={fetchStudents}
         initialData={selectedStudent}
       />
-    </Layout>
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ActivityModal from '../components/Modals/ActivityModal';
 import ManageParticipantsModal from '../components/Modals/ManageParticipantsModal';
@@ -64,7 +63,7 @@ const ActivitiesPage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <ActivitiesHeader onAddClick={() => setIsModalOpen(true)} />
         <ActivitiesTable
@@ -91,7 +90,7 @@ const ActivitiesPage: React.FC = () => {
           activityName={selectedActivity.name}
         />
       )}
-    </Layout>
+    </>
   );
 };
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ActivityCard from '../components/Cards/ActivityCard';
 import ReportFormModal from '../components/Modals/ReportFormModal';
@@ -82,7 +81,7 @@ const StudentActivitiesPage: React.FC = () => {
     };
 
     return (
-        <Layout>
+        <>
             <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-800">Tất Cả Hoạt Động</h2>
                 <p className="text-gray-600">Danh sách các hoạt động đang và sắp diễn ra</p>
@@ -117,7 +116,7 @@ const StudentActivitiesPage: React.FC = () => {
                 onSubmit={handleReportSubmit}
                 initialActivityId={selectedActivityId}
             />
-        </Layout>
+        </>
     );
 };
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ParticipationReportTable from '../components/Tables/ParticipationReportTable';
 import ReportFormModal from '../components/Modals/ReportFormModal';
@@ -43,7 +42,7 @@ const StudentReportsPage: React.FC = () => {
   }, [user?.profile?.id]);
 
   return (
-    <Layout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Báo Cáo Hoạt Động</h2>
@@ -83,7 +82,7 @@ const StudentReportsPage: React.FC = () => {
           }
         }}
       />
-    </Layout>
+    </>
   );
 };
 

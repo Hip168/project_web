@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ClassmatesTable from '../components/Tables/ClassmatesTable';
 import type { RootState } from '../store/store';
@@ -39,20 +38,18 @@ const StudentClassPage: React.FC = () => {
   }, [user?.profile?.lopId]);
 
   return (
-    <Layout>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-bold text-gray-800">Lớp Của Tôi: {user?.profile?.lop?.tenLop}</h3>
-          <p className="text-sm text-gray-500">Danh sách thành viên trong lớp</p>
-        </div>
-
-        <ClassmatesTable
-          students={students}
-          loading={loading}
-          currentUserId={user?.profile?.id}
-        />
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="p-6 border-b border-gray-200">
+        <h3 className="text-lg font-bold text-gray-800">Lớp Của Tôi: {user?.profile?.lop?.tenLop}</h3>
+        <p className="text-sm text-gray-500">Danh sách thành viên trong lớp</p>
       </div>
-    </Layout>
+
+      <ClassmatesTable
+        students={students}
+        loading={loading}
+        currentUserId={user?.profile?.id}
+      />
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import ParticipantsTable from '../Tables/ParticipantsTable';
+import BaseModal from './BaseModal';
 
 interface Participant {
   id: string;
@@ -53,25 +54,27 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = ({ isOpe
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-gray-800">Duyệt tham gia: {activityName}</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            ✕
-          </button>
-        </div>
-
-        <ParticipantsTable
-          participants={participants}
-          loading={loading}
-          onUpdateStatus={handleUpdateStatus}
-        />
+    <BaseModal
+      setOpen={onClose}
+      isOpen={isOpen}
+      className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+    >
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold text-gray-800">
+          Duyệt tham gia: {activityName}
+        </h3>
+        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          ✕
+        </button>
       </div>
-    </div>
+
+      <ParticipantsTable
+        participants={participants}
+        loading={loading}
+        onUpdateStatus={handleUpdateStatus}
+      />
+    </BaseModal>
   );
 };
 

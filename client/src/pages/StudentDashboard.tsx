@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Layout from '../components/Layout';
 import api from '../utils/api';
 import ProfileCard from '../components/Cards/ProfileCard';
 import ScoreCard from '../components/Cards/ScoreCard';
@@ -97,7 +96,7 @@ const StudentDashboard: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800">Tổng Quan</h2>
         <p className="text-gray-600">Chào mừng trở lại, {user?.profile?.hoTen}</p>
@@ -151,7 +150,7 @@ const StudentDashboard: React.FC = () => {
         onSubmit={handleReportSubmit}
         initialActivityId={selectedActivityId}
       />
-    </Layout>
+    </>
   );
 };
 
