@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/authSlice';
 import type { RootState } from '../store/store';
 import Sidebar from './Sidebar/Sidebar';
+import SidebarButton from './Sidebar/SidebarButton';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,18 +28,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   const adminMenuItems = [
-    { path: '/admin', label: 'Trang Chủ', icon: '📊' },
-    { path: '/admin/students', label: 'Sinh Viên', icon: '👨‍🎓' },
-    { path: '/admin/classes', label: 'Lớp Học', icon: '🏫' },
-    { path: '/admin/verification', label: 'Xác Thực', icon: '✅' },
-    { path: '/admin/activities', label: 'Hoạt Động', icon: '🏆' },
-    { path: '/admin/reports', label: 'Báo Cáo', icon: '📈' },
+    { path: '/admin', label: 'Trang Chủ', icon: '/TrangChu.svg' },
+    { path: '/admin/students', label: 'Sinh Viên', icon: '/sinhvien.svg' },
+    { path: '/admin/classes', label: 'Lớp Học', icon: '/lophoc.svg' },
+    { path: '/admin/verification', label: 'Xác Thực', icon: '/xacthuc.svg' },
+    { path: '/admin/activities', label: 'Hoạt Động', icon: '/hoatdong.svg' },
+    { path: '/admin/reports', label: 'Báo Cáo', icon: '/report.svg' },
   ];
 
   const studentMenuItems = [
-    { path: '/student', label: 'Trang Chủ', icon: '🏠' },
-    { path: '/student/class', label: 'Lớp Của Tôi', icon: '👥' },
-    { path: '/student/reports', label: 'Báo Cáo', icon: '📝' },
+    { path: "/student", label: "Trang Chủ", icon: "/TrangChu.svg" },
+    { path: "/student/class", label: "Lớp Của Tôi", icon: "/class.svg" },
+    { path: "/student/reports", label: "Báo Cáo", icon: "/report.svg" },
   ];
 
   const menuItems = user?.role === 'ADMIN' ? adminMenuItems : studentMenuItems;
@@ -50,22 +51,29 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <Sidebar
         userRole={user?.role || ""}
-        userEmail={user?.email?.[0]?.toUpperCase() || "U"}
+        userEmail={user?.profile?.hoTen || "U"}
         handleLogout={handleLogout}
       >
         {menuItems.map((item) => (
-          <Link
+          <SidebarButton
             key={item.path}
             to={item.path}
-            className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-              location.pathname === item.path
-                ? "bg-indigo-700 text-white"
-                : "text-indigo-200 hover:bg-indigo-800 hover:text-white"
-            } `}
-          >
-            <span className="mr-3">{item.icon}</span>
-            {item.label}
-          </Link>
+            icon={item.icon}
+            label={item.label}
+            isActive={location.pathname === item.path}
+          />
+          // <Link
+          //   key={item.path}
+          //   to={item.path}
+          //   className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+          //     location.pathname === item.path
+          //       ? "bg-indigo-700 text-white"
+          //       : "text-indigo-200 hover:bg-indigo-800 hover:text-white"
+          //   } `}
+          // >
+          //   <span className="mr-3">{item.icon}</span>
+          //   {item.label}
+          // </Link>
         ))}
       </Sidebar>
 

@@ -91,7 +91,7 @@ const Sidebar = ({ userRole, userEmail, handleLogout, children }: Para) => {
             <div className="p-4 border-t border-indigo-800">
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-lg font-bold">
-                  {userEmail}
+                  {userEmail[0].toUpperCase()}
                 </div>
                 <div className="ml-3">
                   <p className="font-medium text-sm truncate w-32">
