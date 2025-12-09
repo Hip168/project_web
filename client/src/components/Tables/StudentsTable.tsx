@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion } from 'motion/react';
 
 interface Student {
   id: string;
@@ -98,8 +99,17 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
       <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            <svg
+              className="h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
             </svg>
           </div>
           <input
@@ -111,44 +121,48 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
           />
         </div>
         <div className="text-sm text-gray-500">
-          Tổng số: <span className="font-semibold text-gray-900">{sortedAndFilteredStudents.length}</span> sinh viên
+          Tổng số:{" "}
+          <span className="font-semibold text-gray-900">
+            {sortedAndFilteredStudents.length}
+          </span>{" "}
+          sinh viên
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse overflow-hidden">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th
                 className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none group"
-                onClick={() => handleSort('maSv')}
+                onClick={() => handleSort("maSv")}
               >
                 <div className="flex items-center">
-                  Mã SV {getSortIcon('maSv')}
+                  Mã SV {getSortIcon("maSv")}
                 </div>
               </th>
               <th
                 className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none group"
-                onClick={() => handleSort('hoTen')}
+                onClick={() => handleSort("hoTen")}
               >
                 <div className="flex items-center">
-                  Họ Tên {getSortIcon('hoTen')}
+                  Họ Tên {getSortIcon("hoTen")}
                 </div>
               </th>
               <th
                 className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none group"
-                onClick={() => handleSort('lop')}
+                onClick={() => handleSort("lop")}
               >
                 <div className="flex items-center">
-                  Lớp {getSortIcon('lop')}
+                  Lớp {getSortIcon("lop")}
                 </div>
               </th>
               <th
                 className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none group"
-                onClick={() => handleSort('email')}
+                onClick={() => handleSort("email")}
               >
                 <div className="flex items-center">
-                  Email {getSortIcon('email')}
+                  Email {getSortIcon("email")}
                 </div>
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">
@@ -170,34 +184,60 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
               <tr>
                 <td colSpan={5} className="px-6 py-12 text-center">
                   <div className="flex flex-col items-center justify-center space-y-3">
-                    <svg className="h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <svg
+                      className="h-12 w-12 text-gray-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1}
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                      />
                     </svg>
                     <p className="text-gray-500 font-medium">
-                      {searchTerm ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có sinh viên nào'}
+                      {searchTerm
+                        ? "Không tìm thấy kết quả phù hợp"
+                        : "Chưa có sinh viên nào"}
                     </p>
                     {searchTerm && (
-                      <p className="text-sm text-gray-400">Thử tìm kiếm với từ khóa khác</p>
+                      <p className="text-sm text-gray-400">
+                        Thử tìm kiếm với từ khóa khác
+                      </p>
                     )}
                   </div>
                 </td>
               </tr>
             ) : (
-              sortedAndFilteredStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-gray-50/80 transition-colors duration-150 group">
+              sortedAndFilteredStudents.map((student, index) => (
+                <motion.tr
+                  key={student.id}
+                  className="hover:bg-gray-50/80 transition-colors duration-150 group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 group-hover:bg-white group-hover:shadow-sm transition-all">
                       {student.maSv}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{student.hoTen}</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {student.hoTen}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-600">{student.lop?.tenLop || 'N/A'}</div>
+                    <div className="text-sm text-gray-600">
+                      {student.lop?.tenLop || "N/A"}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500 font-mono">{student.taiKhoan.email}</div>
+                    <div className="text-sm text-gray-500 font-mono">
+                      {student.taiKhoan.email}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -206,8 +246,18 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
                         className="cursor-pointer text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded transition-colors"
                         title="Sửa thông tin"
                       >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
                         </svg>
                       </button>
                       <button
@@ -215,13 +265,23 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
                         className="cursor-pointer text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors"
                         title="Xóa sinh viên"
                       >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
                         </svg>
                       </button>
                     </div>
                   </td>
-                </tr>
+                </motion.tr>
               ))
             )}
           </tbody>

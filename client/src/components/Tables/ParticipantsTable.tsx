@@ -50,8 +50,9 @@ const ParticipantsTable: React.FC<ParticipantsTableProps> = ({
               </td>
             </tr>
           ) : (
-            participants.map((p) => (
+            participants.map((p, index) => (
               <ParticipantTableRow
+                index={index}
                 key={p.id}
                 participant={p}
                 onUpdateStatus={onUpdateStatus}

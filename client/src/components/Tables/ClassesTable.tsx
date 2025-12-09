@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 interface Class {
   id: string;
@@ -22,7 +23,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <table className="w-full text-left">
+      <table className="w-full text-left overflow-hidden">
         <thead className="bg-gray-50 text-gray-600 font-medium text-sm uppercase">
           <tr>
             <th className="px-6 py-3">Tên Lớp</th>
@@ -45,8 +46,14 @@ const ClassesTable: React.FC<ClassesTableProps> = ({
               </td>
             </tr>
           ) : (
-            classes.map((cls) => (
-              <tr key={cls.id} className="hover:bg-gray-50 group">
+            classes.map((cls, index) => (
+              <motion.tr
+                className="hover:bg-gray-50 group"
+                key={cls.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
                 <td className="px-6 py-4 font-medium text-gray-900">
                   {cls.tenLop}
                 </td>
@@ -77,7 +84,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({
                     </button>
                   </div>
                 </td>
-              </tr>
+              </motion.tr>
             ))
           )}
         </tbody>

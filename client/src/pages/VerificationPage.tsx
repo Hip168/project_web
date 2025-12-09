@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import ManageParticipantsModal from '../components/Modals/ManageParticipantsModal';
+import { motion } from 'motion/react';
 
 interface Participation {
   id: string;
@@ -68,8 +69,12 @@ const VerificationPage: React.FC = () => {
       {/* Pending Requests Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-200 bg-indigo-50">
-          <h3 className="text-lg font-bold text-indigo-900">Yêu Cầu Chờ Duyệt ({pendingParticipations.length})</h3>
-          <p className="text-sm text-indigo-700">Danh sách sinh viên vừa gửi minh chứng cần xác nhận</p>
+          <h3 className="text-lg font-bold text-indigo-900">
+            Yêu Cầu Chờ Duyệt ({pendingParticipations.length})
+          </h3>
+          <p className="text-sm text-indigo-700">
+            Danh sách sinh viên vừa gửi minh chứng cần xác nhận
+          </p>
         </div>
 
         <div className="overflow-x-auto">
@@ -87,29 +92,58 @@ const VerificationPage: React.FC = () => {
             <tbody className="divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">Đang tải...</td>
+                  <td
+                    colSpan={6}
+                    className="px-6 py-8 text-center text-gray-500"
+                  >
+                    Đang tải...
+                  </td>
                 </tr>
               ) : pendingParticipations.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                  <td
+                    colSpan={6}
+                    className="px-6 py-8 text-center text-gray-500"
+                  >
                     Không có yêu cầu nào đang chờ duyệt.
                   </td>
                 </tr>
               ) : (
-                pendingParticipations.map((p) => (
-                  <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                pendingParticipations.map((p, index) => (
+                  <motion.tr
+                    key={p.id}
+                    className="hover:bg-gray-50 transition-colors"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
                     <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900">{p.sinhVien.hoTen}</div>
-                      <div className="text-xs text-gray-500">{p.sinhVien.maSv}</div>
+                      <div className="font-medium text-gray-900">
+                        {p.sinhVien.hoTen}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {p.sinhVien.maSv}
+                      </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{p.sinhVien.lop?.tenLop}</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      {p.sinhVien.lop?.tenLop}
+                    </td>
                     <td className="px-6 py-4">
-                      <div className="text-gray-900">{p.hoatDong.tenHoatDong}</div>
-                      <div className="text-xs text-indigo-600 font-bold">+{p.hoatDong.diemCong} điểm</div>
+                      <div className="text-gray-900">
+                        {p.hoatDong.tenHoatDong}
+                      </div>
+                      <div className="text-xs text-indigo-600 font-bold">
+                        +{p.hoatDong.diemCong} điểm
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       {p.minhChung ? (
-                        <a href={p.minhChung} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">
+                        <a
+                          href={p.minhChung}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline text-sm"
+                        >
                           Xem ảnh
                         </a>
                       ) : (
@@ -117,23 +151,23 @@ const VerificationPage: React.FC = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 text-gray-600 text-sm">
-                      {new Date(p.ngayDangKy).toLocaleDateString('vi-VN')}
+                      {new Date(p.ngayDangKy).toLocaleDateString("vi-VN")}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <button
-                        onClick={() => handleUpdateStatus(p.id, 'DA_DUYET')}
+                        onClick={() => handleUpdateStatus(p.id, "DA_DUYET")}
                         className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium shadow-sm"
                       >
                         ✓ Duyệt
                       </button>
                       <button
-                        onClick={() => handleUpdateStatus(p.id, 'TU_CHOI')}
+                        onClick={() => handleUpdateStatus(p.id, "TU_CHOI")}
                         className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm font-medium"
                       >
                         ✕ Từ chối
                       </button>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))
               )}
             </tbody>
@@ -144,8 +178,12 @@ const VerificationPage: React.FC = () => {
       {/* All Activities Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-bold text-gray-800">Danh Sách Hoạt Động</h3>
-          <p className="text-sm text-gray-500">Quản lý chi tiết từng hoạt động</p>
+          <h3 className="text-lg font-bold text-gray-800">
+            Danh Sách Hoạt Động
+          </h3>
+          <p className="text-sm text-gray-500">
+            Quản lý chi tiết từng hoạt động
+          </p>
         </div>
 
         <div className="overflow-x-auto">
@@ -159,22 +197,37 @@ const VerificationPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {activities.map((activity) => (
-                <tr key={activity.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-gray-900">{activity.tenHoatDong}</td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {new Date(activity.ngayDienRa).toLocaleDateString('vi-VN')}
+              {activities.map((activity, index) => (
+                <motion.tr
+                  key={activity.id}
+                  className="hover:bg-gray-50 transition-colors"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    {activity.tenHoatDong}
                   </td>
-                  <td className="px-6 py-4 font-bold text-indigo-600">+{activity.diemCong}</td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {new Date(activity.ngayDienRa).toLocaleDateString("vi-VN")}
+                  </td>
+                  <td className="px-6 py-4 font-bold text-indigo-600">
+                    +{activity.diemCong}
+                  </td>
                   <td className="px-6 py-4 text-right">
                     <button
-                      onClick={() => setSelectedActivity({ id: activity.id, name: activity.tenHoatDong })}
+                      onClick={() =>
+                        setSelectedActivity({
+                          id: activity.id,
+                          name: activity.tenHoatDong,
+                        })
+                      }
                       className="cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                     >
                       Xem chi tiết →
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>

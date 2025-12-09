@@ -31,7 +31,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
 }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left">
+      <table className="w-full text-left overflow-hidden">
         <thead className="bg-gray-50 text-gray-600 font-medium text-sm uppercase tracking-wider">
           <tr>
             <th className="px-6 py-4">Tên Hoạt Động</th>
@@ -58,15 +58,16 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
               </td>
             </tr>
           ) : (
-            activities.map((activity) => (
-              <ActivityTableRow
-                key={activity.id}
-                activity={activity}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onManageParticipants={onManageParticipants}
-              />
-            ))
+              activities.map((activity, index) => (
+                <ActivityTableRow
+                  index={index}
+                  key={activity.id}
+                  activity={activity}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onManageParticipants={onManageParticipants}
+                />
+              ))
           )}
         </tbody>
       </table>

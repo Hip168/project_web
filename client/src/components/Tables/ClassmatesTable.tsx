@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 interface Student {
   id: string;
@@ -48,10 +49,15 @@ const ClassmatesTable: React.FC<ClassmatesTableProps> = ({
               </td>
             </tr>
           ) : (
-            students.map((student) => (
-              <tr
+            students.map((student, index) => (
+              <motion.tr
                 key={student.id}
-                className={`hover:bg-gray-50 transition-colors ${student.id === currentUserId ? 'bg-indigo-50' : ''}`}
+                className={`hover:bg-gray-50 transition-colors ${
+                  student.id === currentUserId ? "bg-indigo-50" : ""
+                }`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
                 <td className="px-6 py-4 font-medium text-gray-900">
                   {student.maSv}
@@ -63,11 +69,13 @@ const ClassmatesTable: React.FC<ClassmatesTableProps> = ({
                 </td>
                 <td className="px-6 py-4 text-gray-800">{student.hoTen}</td>
                 <td className="px-6 py-4 text-gray-600">
-                  {new Date(student.ngaySinh).toLocaleDateString('vi-VN')}
+                  {new Date(student.ngaySinh).toLocaleDateString("vi-VN")}
                 </td>
                 <td className="px-6 py-4 text-gray-600">{student.gioiTinh}</td>
-                <td className="px-6 py-4 text-gray-600">{student.taiKhoan.email}</td>
-              </tr>
+                <td className="px-6 py-4 text-gray-600">
+                  {student.taiKhoan.email}
+                </td>
+              </motion.tr>
             ))
           )}
         </tbody>

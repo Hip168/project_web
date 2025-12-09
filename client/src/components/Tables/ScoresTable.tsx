@@ -1,6 +1,6 @@
 import React from 'react';
 import StatusBadge from '../Common/StatusBadge';
-
+import { motion } from 'motion/react';
 interface StudentScore {
   id: string;
   maSv: string;
@@ -48,18 +48,30 @@ const ScoresTable: React.FC<ScoresTableProps> = ({
               </td>
             </tr>
           ) : (
-            students.map((student) => {
+            students.map((student, index) => {
               const latestScore = student.diemRenLuyens?.[0];
               return (
-                <tr key={student.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-gray-900">{student.maSv}</td>
-                  <td className="px-6 py-4 text-gray-800">{student.hoTen}</td>
-                  <td className="px-6 py-4 text-gray-600">{student.lop?.tenLop || 'N/A'}</td>
-                  <td className="px-6 py-4 font-bold text-indigo-600">{latestScore?.tongDiem || 0}</td>
-                  <td className="px-6 py-4">
-                    <StatusBadge status={latestScore?.xepLoai || 'N/A'} />
+                <motion.tr
+                  key={student.id}
+                  className="hover:bg-gray-50 transition-colors"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    {student.maSv}
                   </td>
-                </tr>
+                  <td className="px-6 py-4 text-gray-800">{student.hoTen}</td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {student.lop?.tenLop || "N/A"}
+                  </td>
+                  <td className="px-6 py-4 font-bold text-indigo-600">
+                    {latestScore?.tongDiem || 0}
+                  </td>
+                  <td className="px-6 py-4">
+                    <StatusBadge status={latestScore?.xepLoai || "N/A"} />
+                  </td>
+                </motion.tr>
               );
             })
           )}

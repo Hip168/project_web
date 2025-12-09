@@ -1,5 +1,6 @@
 import React from 'react';
 import ActionButton from '../Buttons/ActionButton';
+import { motion } from 'motion/react';
 
 interface Activity {
   id: string;
@@ -15,6 +16,7 @@ interface Activity {
 }
 
 interface ActivityTableRowProps {
+  index: number;
   activity: Activity;
   onEdit: (activity: Activity) => void;
   onDelete: (id: string) => void;
@@ -26,9 +28,16 @@ const ActivityTableRow: React.FC<ActivityTableRowProps> = ({
   onEdit,
   onDelete,
   onManageParticipants,
+  index,
 }) => {
   return (
-    <tr className="hover:bg-gray-50 transition-colors">
+    <motion.tr
+      className="hover:bg-gray-50 transition-colors"
+      key={activity.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+    >
       <td className="px-6 py-4 font-medium text-gray-900">
         {activity.tenHoatDong}
       </td>
@@ -101,7 +110,7 @@ const ActivityTableRow: React.FC<ActivityTableRowProps> = ({
           </svg>
         </button>
       </td>
-    </tr>
+    </motion.tr>
   );
 };
 
