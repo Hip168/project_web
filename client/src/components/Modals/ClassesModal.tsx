@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseModal from './BaseModal';
+import ActionButton from '../Buttons/ActionButton';
 
 interface ClassesModalProps {
   isOpen: boolean;
@@ -52,19 +53,21 @@ const ClassesModal: React.FC<ClassesModalProps> = ({
           />
         </div>
         <div className="flex justify-end gap-3 mt-6">
-          <button
+          <ActionButton
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+            className="px-4 py-2 text-gray-600 bg-white rounded-lg"
+            colorOnHover="#f3f4f6"
           >
             Hủy
-          </button>
-          <button
+          </ActionButton>
+          <ActionButton
             type="submit"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
+            colorOnHover="#432dd7"
           >
             Thêm Lớp
-          </button>
+          </ActionButton>
         </div>
       </form>
     </BaseModal>

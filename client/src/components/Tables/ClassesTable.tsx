@@ -34,25 +34,48 @@ const ClassesTable: React.FC<ClassesTableProps> = ({
         <tbody className="divide-y divide-gray-200">
           {loading ? (
             <tr>
-              <td colSpan={4} className="text-center py-4">Đang tải...</td>
+              <td colSpan={4} className="text-center py-4">
+                Đang tải...
+              </td>
             </tr>
           ) : classes.length === 0 ? (
             <tr>
-              <td colSpan={4} className="text-center py-4">Chưa có lớp nào</td>
+              <td colSpan={4} className="text-center py-4">
+                Chưa có lớp nào
+              </td>
             </tr>
           ) : (
             classes.map((cls) => (
-              <tr key={cls.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium text-gray-900">{cls.tenLop}</td>
+              <tr key={cls.id} className="hover:bg-gray-50 group">
+                <td className="px-6 py-4 font-medium text-gray-900">
+                  {cls.tenLop}
+                </td>
                 <td className="px-6 py-4 text-gray-600">{cls.khoa}</td>
-                <td className="px-6 py-4 text-gray-500 font-medium">{cls._count?.sinhViens || 0}</td>
+                <td className="px-6 py-4 text-gray-500 font-medium">
+                  {cls._count?.sinhViens || 0}
+                </td>
                 <td className="px-6 py-4 text-right">
-                  <button
-                    onClick={() => onDelete(cls.id)}
-                    className="text-red-600 hover:text-red-800 font-medium text-sm"
-                  >
-                    Xóa
-                  </button>
+                  <div className="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <button
+                      onClick={() => onDelete(cls.id)}
+                      className="cursor-pointer text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors"
+                      title="Xóa lớp"
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

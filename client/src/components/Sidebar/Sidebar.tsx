@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import ActionButton from "../Buttons/ActionButton";
 
 type Para = {
   userRole: string;
@@ -102,12 +103,13 @@ const Sidebar = ({ userRole, userEmail, handleLogout, children }: Para) => {
                   </p>
                 </div>
               </div>
-              <button
+              <ActionButton
                 onClick={handleLogout}
-                className="w-full py-2 px-4 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors"
+                className="w-full py-2 px-4 bg-red-600 rounded text-sm transition-colors"
+                colorOnHover="rgb(193, 0, 7)"
               >
                 Đăng Xuất
-              </button>
+              </ActionButton>
             </div>
           </motion.div>
         )}

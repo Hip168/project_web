@@ -17,8 +17,8 @@ interface Participant {
 interface ManageParticipantsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activityId: string;
-  activityName: string;
+  activityId: string | undefined;
+  activityName: string | undefined;
 }
 
 const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = ({ isOpen, onClose, activityId, activityName }) => {
@@ -64,7 +64,7 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = ({ isOpe
         <h3 className="text-xl font-bold text-gray-800">
           Duyệt tham gia: {activityName}
         </h3>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+        <button onClick={onClose} className="cursor-pointer text-gray-500 hover:text-gray-700">
           ✕
         </button>
       </div>

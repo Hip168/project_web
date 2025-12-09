@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import BaseModal from './BaseModal';
+import ActionButton from '../Buttons/ActionButton';
 
 interface Activity {
   id: string;
@@ -115,7 +116,10 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, onSucces
         <h3 className="text-xl font-bold text-gray-800">
           {initialData ? "Edit Activity" : "Add New Activity"}
         </h3>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-700 cursor-pointer text-2xl">
+        <button
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700 cursor-pointer text-2xl"
+        >
           ✕
         </button>
       </div>
@@ -246,24 +250,26 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, onSucces
         </div>
 
         <div className="col-span-2 flex justify-end space-x-3 mt-4">
-          <button
+          <ActionButton
             type="button"
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white"
+            colorOnHover="#f9fafb"
           >
             Cancel
-          </button>
-          <button
+          </ActionButton>
+          <ActionButton
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            colorOnHover="#4f46e5"
           >
             {loading
               ? "Processing..."
               : initialData
               ? "Update Activity"
               : "Create Activity"}
-          </button>
+          </ActionButton>
         </div>
       </form>
     </BaseModal>

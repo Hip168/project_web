@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import BaseModal from './BaseModal';
+import ActionButton from '../Buttons/ActionButton';
 
 interface ReportFormModalProps {
   isOpen: boolean;
@@ -104,20 +105,22 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({
           </p>
         </div>
         <div className="flex justify-end space-x-3">
-          <button
+          <ActionButton
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-gray-600 hover:text-gray-800"
+            className="px-4 py-2 text-gray-600 bg-white rounded-lg"
+            colorOnHover="#f3f4f6"
           >
             Hủy
-          </button>
-          <button
+          </ActionButton>
+          <ActionButton
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            colorOnHover="#432dd7"
           >
             {loading ? "Gửi..." : "Gửi Báo Cáo"}
-          </button>
+          </ActionButton>
         </div>
       </form>
     </BaseModal>

@@ -169,7 +169,7 @@ const VerificationPage: React.FC = () => {
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => setSelectedActivity({ id: activity.id, name: activity.tenHoatDong })}
-                      className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
+                      className="cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                     >
                       Xem chi tiết →
                     </button>
@@ -181,14 +181,12 @@ const VerificationPage: React.FC = () => {
         </div>
       </div>
 
-      {selectedActivity && (
-        <ManageParticipantsModal
-          isOpen={!!selectedActivity}
-          onClose={() => setSelectedActivity(null)}
-          activityId={selectedActivity.id}
-          activityName={selectedActivity.name}
-        />
-      )}
+      <ManageParticipantsModal
+        isOpen={!!selectedActivity}
+        onClose={() => setSelectedActivity(null)}
+        activityId={selectedActivity?.id}
+        activityName={selectedActivity?.name}
+      />
     </div>
   );
 };

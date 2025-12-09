@@ -203,7 +203,7 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
                     <div className="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       <button
                         onClick={() => onEdit(student)}
-                        className="text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded transition-colors"
+                        className="cursor-pointer text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded transition-colors"
                         title="Sửa thông tin"
                       >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -212,7 +212,7 @@ const StudentsTable: React.FC<StudentsTableProps> = ({
                       </button>
                       <button
                         onClick={() => onDelete(student.id)}
-                        className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors"
+                        className="cursor-pointer text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors"
                         title="Xóa sinh viên"
                       >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

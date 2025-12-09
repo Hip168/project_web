@@ -16,9 +16,10 @@ const SidebarButton = ({ to, icon='', label, isActive }: Para) => {
   return (
     <MotionLink
       to={to}
-      className={`relative flex z-10 items-center px-4 py-3 rounded-full cursor-pointer transition-colors
+      className={`select-none relative flex z-10 items-center px-4 py-3 rounded-full cursor-pointer transition-colors
         ${isActive ? "text-white" : "text-indigo-200 hover:bg-indigo-800 hover:text-white"}  
       `}
+      draggable={false}
     >
       {/* icon */}
       <img src={icon} alt={label} className="mr-3 aspect-square w-6 invert" />
@@ -32,11 +33,11 @@ const SidebarButton = ({ to, icon='', label, isActive }: Para) => {
           layoutId="highlightMain"
           className="absolute inset-0 rounded-full bg-indigo-700 -z-5"
           animate={hightlightControls}
-          onLayoutAnimationStart={() =>
-            hightlightControls.start({ width: 50, height: 50 })
+          onLayoutAnimationStart={async () =>
+            await hightlightControls.start({ width: 50, height: 50 })
           }
-          onLayoutAnimationComplete={() =>
-            hightlightControls.start({
+          onLayoutAnimationComplete={async () =>
+            await hightlightControls.start({
               width: "auto",
               height: "auto",
             })

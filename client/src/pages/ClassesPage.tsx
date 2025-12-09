@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import ClassesTable from '../components/Tables/ClassesTable';
 import ClassesModal from '../components/Modals/ClassesModal';
+import ActionButton from '../components/Buttons/ActionButton';
 
 interface Class {
   id: string;
@@ -60,12 +61,13 @@ const ClassesPage: React.FC = () => {
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Quản Lý Lớp Học</h2>
-        <button
+        <ActionButton
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors"
+          colorOnHover="#432dd7"
         >
           + Thêm Lớp
-        </button>
+        </ActionButton>
       </div>
 
       <ClassesTable
@@ -79,7 +81,9 @@ const ClassesPage: React.FC = () => {
         onClose={() => setShowModal(false)}
         onSubmit={handleAddClass}
         newClass={newClass}
-        onClassChange={(field, value) => setNewClass({ ...newClass, [field]: value })}
+        onClassChange={(field, value) =>
+          setNewClass({ ...newClass, [field]: value })
+        }
       />
     </>
   );
